@@ -4,8 +4,8 @@
 Vagrant.configure("2") do |config|
 
   # Configuration
-  nb_workers = 1
-  bridge_interface = "en5: Thunderbolt Ethernet Slot 1"
+  nb_workers = 3
+  bridge_interface = "wlp2s0"
 
   # Common VM configuration
 
@@ -15,7 +15,6 @@ Vagrant.configure("2") do |config|
 
   # Configure Kubernetes master node
   config.vm.define "kube-master" do |master|
-    
     master.vm.hostname = "kube-master"
     master.vm.provider :virtualbox do |v|
       v.name = "kube-master"
@@ -28,7 +27,6 @@ Vagrant.configure("2") do |config|
 
   (1..nb_workers).each do |i|
     config.vm.define "kube-worker-#{i}" do |worker|
-      
       worker.vm.hostname = "kube-worker-#{i}"
       worker.vm.provider :virtualbox do |v|
         v.name = "kube-worker-#{i}"
