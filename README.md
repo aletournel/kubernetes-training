@@ -10,11 +10,11 @@ the LFS258 Kubernetes fundamentals training.
 * Bridge networking: we use public networking to expose Kubernetes API Server
 
 This setup was used on a Macos based workstation.
-I believe the Vagrant part of this repositor will work fine on any machine that support Virtualbox & Vagrant.
+I believe the Vagrant part of this repository will work fine on any machine that support Virtualbox & Vagrant.
 
 ## Configuration
 
-As of now there is few configuration options available except for:
+As of now there is few configuration options available except:
 * configure the number of Kubernetes worker you want to have. Default: 1
 * configure the network interface that will be used as a bridge.
     * The default value suits my personal rig: *there are good chances that you need to update this configuration.*
@@ -48,16 +48,27 @@ You can connect to the instances through the following commands:
 
 The Kubernetes fundamentals training will guide through the usage of `kubeadm` so I won't tell that much about it.
 
+Note that sometimes `kubeadm init` will pick the wrong network interface & bind Kubernetes API server to the NAT
+interface `10.0.2.15`.
+
+If this happens:
+* Reset the master node by either:
+  * `sudo kubeadm reset`
+  * or use the make target `make restore snapshot=before-kubeadm`
+* Fetch your public IP out of `ip addr`. This one should be set on the *eth1* interface
+* Use the `--apiserver-advertise-address` option during `kubeadm init`
+
 After establishing the cluster:
-* take care
+* make sure that you follow `kubeadm` instructions to move the Kubernetes config
+  file to your user inside the Kubernetes master node
 * create a snapshot for Kubernetes master: it could help you later if you screw up
-        * `make save snapshot=after-kubeadm`
+  * `make save snapshot=after-kubeadm`
 
 ### Fetch the Kubernetes config file for local usage
 
 You can use the following commands in order to use your own terminal/shell to work with this cluster
 
-Note: you must have followed `kubeadm` instructions about moving the Kubernetes configuratin file to the user home.
+Note: you must have followed `kubeadm` instructions about moving the Kubernetes configuration file to the user home.
 
 ```
 vagrant ssh-config > /tmp/vagrant.ssh

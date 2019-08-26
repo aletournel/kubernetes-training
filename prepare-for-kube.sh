@@ -22,7 +22,7 @@ exclude=kube*
 EOF
 
 yum update -y
-yum install -y vim docker kubelet kubeadm kubectl --disableexcludes=kubernetes
+yum install -y vim wget docker kubelet kubeadm kubectl --disableexcludes=kubernetes
 
 # Enable routing
 cat <<EOF > /etc/sysctl.d/k8s.conf

@@ -1,8 +1,8 @@
 init:
 	vagrant up
 
-list-master-snapshots:
-	vagrant snapshot list kube-master
+list-snapshots:
+	vagrant snapshot list
 
 save:
 	vagrant halt
