@@ -25,11 +25,19 @@ yum update -y
 yum install -y vim docker kubelet kubeadm kubectl --disableexcludes=kubernetes
 
 # Enable routing
-cat <<EOF >  /etc/sysctl.d/k8s.conf
+cat <<EOF > /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF
 sysctl --system
+
+# Enable devicemapper
+cat <<EOF > /etc/sysconfig/docker-storage
+DOCKER_STORAGE_OPTIONS="--storage-driver devicemapper "
+EOF
+cat <<EOF > /etc/sysconfig/docker-storage-setup
+STORAGE_DRIVER=devicemapper
+EOF
 
 # Start services
 systemctl enable --now docker
